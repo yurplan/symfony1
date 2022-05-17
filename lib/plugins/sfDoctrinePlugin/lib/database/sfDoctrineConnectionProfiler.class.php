@@ -200,6 +200,10 @@ class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
 
     foreach ($params as $key => $param)
     {
+      if (gettype($param) === 'resource') {
+        $params[$key] = '[resource]';
+        continue;
+      }
       if (strlen($param) >= 255)
       {
         $params[$key] = '['.number_format(strlen($param) / 1024, 2).'Kb]';
