@@ -221,6 +221,10 @@ class sfViewCacheManager
      */
     public function registerConfiguration($moduleName)
     {
+        // Sanitize to stay consistent with sfController::forward() and avoid
+        // filesystem errors when hostile input reaches the cache filter before the dispatcher.
+        $moduleName = preg_replace('/[^a-z0-9_]+/i', '', $moduleName);
+
         if (!isset($this->loaded[$moduleName])) {
             require $this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/cache.yml');
             $this->loaded[$moduleName] = true;
